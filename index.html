@@ -1,0 +1,2284 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Jejak Tanda Akhirat: Cabaran Kad Kiamat (Tingkatan 3)</title>
+  <!-- Pustaka Wajib DidikARealiti AI (ar-kad.js mesti sebelum skrip lain) -->
+  <script src="https://nazatulainiabdmajid.github.io/DidikARealiti_AI/ar-kad.js"></script>
+  <script src="https://nazatulainiabdmajid.github.io/DidikARealiti_AI/ai-adaptif.js"></script>
+  <style>
+    :root {
+      --bg: #f4f6fb;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --p1: #0d9488;
+      --p1-light: #ccfbf1;
+      --p1-dark: #0f766e;
+      --p2: #2563eb;
+      --p2-light: #dbeafe;
+      --p2-dark: #1d4ed8;
+      --p3: #7c3aed;
+      --p3-light: #ede9fe;
+      --p3-dark: #6d28d9;
+      --p4: #d97706;
+      --p4-light: #fef3c7;
+      --p4-dark: #b45309;
+      --danger: #dc2626;
+      --success: #16a34a;
+      --shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding-bottom: 32px;
+    }
+
+    /* Bar Atas */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #fff;
+      padding: 10px 14px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
+    }
+
+    .topbar-row {
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .app-brand {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .app-title {
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: #f8fafc;
+    }
+
+    .app-subtitle {
+      font-size: 0.72rem;
+      color: #cbd5e1;
+    }
+
+    .topbar-stats {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .stat-pill {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .btn-reset {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 999px;
+      padding: 5px 11px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-reset.confirm-danger {
+      background: var(--danger);
+      border-color: #fecaca;
+      color: #fff;
+      animation: pulseWarn 0.7s infinite alternate;
+    }
+
+    @keyframes pulseWarn {
+      from { transform: scale(1); }
+      to { transform: scale(1.04); }
+    }
+
+    /* Navigasi 4 Fasa */
+    .phase-nav {
+      max-width: 860px;
+      margin: 12px auto 0;
+      padding: 0 12px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .phase-btn {
+      border: 2px solid transparent;
+      border-radius: 12px;
+      padding: 9px 6px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      cursor: pointer;
+      background: #fff;
+      color: var(--text);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      transition: all 0.2s ease;
+    }
+
+    .phase-btn span.p-num {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      opacity: 0.8;
+    }
+
+    .phase-btn[data-phase="1"].active {
+      background: var(--p1);
+      color: #fff;
+      border-color: var(--p1-dark);
+    }
+
+    .phase-btn[data-phase="2"].active {
+      background: var(--p2);
+      color: #fff;
+      border-color: var(--p2-dark);
+    }
+
+    .phase-btn[data-phase="3"].active {
+      background: var(--p3);
+      color: #fff;
+      border-color: var(--p3-dark);
+    }
+
+    .phase-btn[data-phase="4"].active {
+      background: var(--p4);
+      color: #fff;
+      border-color: var(--p4-dark);
+    }
+
+    /* Bekas Utama */
+    .container {
+      max-width: 860px;
+      margin: 12px auto;
+      padding: 0 12px;
+    }
+
+    /* Watak Pemandu & Sokongan Dialog */
+    .guide-box {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      box-shadow: var(--shadow);
+      border-left: 6px solid var(--p1);
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+      transition: border-color 0.3s ease;
+    }
+
+    .guide-avatar {
+      width: 58px;
+      height: 58px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: #e0f2fe;
+      border: 2px solid #0284c7;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .guide-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .guide-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+    }
+
+    .guide-name {
+      font-weight: 800;
+      font-size: 0.9rem;
+      color: #0f172a;
+    }
+
+    /* 5 Label Sokongan Dialog (Oinas-Kukkonen & Harjumaa, 2009) */
+    .dialog-badge {
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #fff;
+    }
+
+    .badge-PENCETUS { background: #0284c7; }
+    .badge-PERINGATAN { background: #ea580c; }
+    .badge-CADANGAN { background: #7c3aed; }
+    .badge-PUJIAN { background: #16a34a; }
+    .badge-GANJARAN { background: #ca8a04; }
+
+    .guide-text {
+      font-size: 0.9rem;
+      color: #1e293b;
+      margin: 0;
+    }
+
+    /* Panel Lencana */
+    .badge-drawer {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-bottom: 14px;
+      display: none;
+    }
+
+    .badge-drawer.open {
+      display: block;
+    }
+
+    .badge-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .badge-item {
+      font-size: 0.76rem;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: #f1f5f9;
+      color: #94a3b8;
+      border: 1px dashed #cbd5e1;
+      font-weight: 700;
+    }
+
+    .badge-item.unlocked {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #f59e0b;
+    }
+
+    /* Seksyen Fasa */
+    .phase-section {
+      display: none;
+    }
+
+    .phase-section.active {
+      display: block;
+      animation: fadeIn 0.25s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-panel {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+      margin-bottom: 14px;
+    }
+
+    .phase-banner {
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      color: #fff;
+    }
+
+    .p1-banner { background: linear-gradient(135deg, var(--p1), var(--p1-dark)); }
+    .p2-banner { background: linear-gradient(135deg, var(--p2), var(--p2-dark)); }
+    .p3-banner { background: linear-gradient(135deg, var(--p3), var(--p3-dark)); }
+    .p4-banner { background: linear-gradient(135deg, var(--p4), var(--p4-dark)); }
+
+    .phase-banner h2 {
+      margin: 0 0 4px;
+      font-size: 1.12rem;
+    }
+
+    .phase-banner p {
+      margin: 0;
+      font-size: 0.85rem;
+      opacity: 0.95;
+    }
+
+    /* Butang Umum */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border: none;
+      border-radius: 11px;
+      padding: 10px 14px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.12s ease, opacity 0.15s ease;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn-p1 { background: var(--p1); color: #fff; }
+    .btn-p1-outline { background: var(--p1-light); color: var(--p1-dark); border: 1.5px solid var(--p1); }
+    .btn-p2 { background: var(--p2); color: #fff; }
+    .btn-p3 { background: var(--p3); color: #fff; }
+    .btn-p4 { background: var(--p4); color: #fff; }
+    .btn-secondary { background: #e2e8f0; color: #1e293b; }
+    .btn-mic { background: #fee2e2; color: #b91c1c; border: 1.5px solid #fca5a5; }
+    .btn-mic.listening { background: #dc2626; color: #fff; animation: pulseWarn 0.6s infinite alternate; }
+
+    /* Fasa 1: Misi & Kad AR/Klik */
+    .mode-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    @media (max-width: 520px) {
+      .mode-buttons {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .mission-box {
+      background: #f0fdfa;
+      border: 1.5px solid #99f6e4;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 14px;
+    }
+
+    .mission-title {
+      font-weight: 800;
+      font-size: 0.9rem;
+      color: var(--p1-dark);
+      margin-bottom: 6px;
+    }
+
+    .mission-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .mission-item {
+      font-size: 0.84rem;
+      padding: 7px 10px;
+      border-radius: 8px;
+      background: #fff;
+      border: 1px solid #ccfbf1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .mission-item.current {
+      border-color: var(--p1);
+      box-shadow: 0 0 0 2px rgba(13, 148, 136, 0.15);
+      font-weight: 700;
+    }
+
+    .mission-item.done {
+      background: #dcfce7;
+      border-color: #86efac;
+      color: #166534;
+      text-decoration: line-through;
+    }
+
+    /* Paparan Info di Atas Kad yang Dikesan/Diklik */
+    .card-overlay-viewer {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: #fff;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 14px;
+      border: 2px solid #2dd4bf;
+    }
+
+    .overlay-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 2px 9px;
+      border-radius: 999px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .tag-kecil { background: #0284c7; color: #fff; }
+    .tag-besar { background: #dc2626; color: #fff; }
+
+    /* Grid 6 Kad */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+    }
+
+    .ar-card-tile {
+      background: #f8fafc;
+      border: 2px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.18s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .ar-card-tile:hover {
+      border-color: var(--p1);
+      transform: translateY(-2px);
+    }
+
+    .ar-card-tile.collected {
+      border-color: #16a34a;
+      background: #f0fdf4;
+    }
+
+    .ar-card-img-wrap {
+      width: 92px;
+      height: 92px;
+      border-radius: 10px;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .ar-card-img-wrap img,
+    .ar-card-img-wrap canvas {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .ar-card-name {
+      font-size: 0.83rem;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .ar-card-status {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    /* Seksyen Cetak Kad Guru */
+    details.print-section {
+      margin-top: 14px;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 10px 12px;
+    }
+
+    details.print-section summary {
+      font-weight: 800;
+      font-size: 0.9rem;
+      cursor: pointer;
+      color: #0f172a;
+    }
+
+    #bekasKadCetak {
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 10px;
+    }
+
+    /* Fasa 2: Renung */
+    .reflect-q {
+      border: 1.5px solid #dbeafe;
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    .reflect-q h4 {
+      margin: 0 0 8px;
+      font-size: 0.92rem;
+      color: #1e3a8a;
+    }
+
+    textarea.input-box, input.input-box, select.input-box {
+      width: 100%;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 9px 11px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      background: #fff;
+      margin-bottom: 8px;
+    }
+
+    .action-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .feedback-inline {
+      margin-top: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.84rem;
+      display: none;
+    }
+
+    .feedback-inline.show {
+      display: block;
+    }
+
+    .fb-ok {
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #86efac;
+    }
+
+    .fb-warn {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fcd34d;
+    }
+
+    /* Fasa 3: Faham */
+    .concept-chips {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .concept-chip {
+      background: #f5f3ff;
+      border: 1.5px solid #ddd6fe;
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    .concept-chip strong {
+      display: block;
+      color: var(--p3-dark);
+      font-size: 0.86rem;
+      margin-bottom: 3px;
+    }
+
+    .concept-chip span {
+      font-size: 0.78rem;
+      color: #4c1d95;
+    }
+
+    .ai-panel-bar {
+      background: #ede9fe;
+      border: 1px solid #c4b5fd;
+      border-radius: 10px;
+      padding: 9px 12px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: #4c1d95;
+    }
+
+    .remediation-card {
+      border: 1.5px solid #e9d5ff;
+      background: #faf5ff;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+
+    /* Fasa 4: Cuba */
+    .sim-card {
+      border: 2px solid #fde68a;
+      background: #fffbeb;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+
+    .sim-card.recommended {
+      border-color: var(--p4);
+      box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.16);
+    }
+
+    .rec-tag {
+      display: inline-block;
+      background: var(--p4);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 2px 9px;
+      border-radius: 999px;
+      margin-bottom: 6px;
+    }
+
+    .sort-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 9px;
+      padding: 8px 10px;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+
+    .order-controls {
+      display: inline-flex;
+      gap: 4px;
+    }
+
+    .btn-mini {
+      padding: 4px 9px;
+      font-size: 0.78rem;
+      border-radius: 7px;
+      border: 1px solid #cbd5e1;
+      background: #f1f5f9;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    /* Footer Kredit */
+    footer.app-footer {
+      max-width: 860px;
+      margin: 22px auto 0;
+      padding: 14px 12px;
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+
+    footer.app-footer p {
+      margin: 3px 0;
+    }
+
+    @media print {
+      .topbar, .phase-nav, .guide-box, .mode-buttons, .mission-box, .card-overlay-viewer, .cards-grid, #fasa2, #fasa3, #fasa4, .no-print {
+        display: none !important;
+      }
+      details.print-section {
+        display: block !important;
+        border: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BAR ATAS -->
+  <header class="topbar">
+    <div class="topbar-row">
+      <div class="app-brand">
+        <span class="app-title">Jejak Tanda Akhirat: Cabaran Kad Kiamat</span>
+        <span class="app-subtitle">Pendidikan Islam Tingkatan 3 • Beriman kepada Hari Akhirat</span>
+      </div>
+      <div class="topbar-stats">
+        <span class="stat-pill" title="Jumlah Bintang Ganjaran">★ <span id="starCount">0</span></span>
+        <span class="stat-pill" onclick="toggleBadgeDrawer()" title="Klik untuk lihat lencana">🏅 <span id="badgeCount">0</span>/6</span>
+        <button id="btnResetAll" class="btn-reset" onclick="handleResetClick()">🔄 Mula semula</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- NAVIGASI 4 FASA (KITARAN KOLB) -->
+  <nav class="phase-nav" aria-label="Navigasi Empat Fasa Pembelajaran">
+    <button class="phase-btn active" data-phase="1" onclick="tukarFasa(1)">
+      <span class="p-num">Fasa 1</span>
+      <span>🔍 Alami</span>
+    </button>
+    <button class="phase-btn" data-phase="2" onclick="tukarFasa(2)">
+      <span class="p-num">Fasa 2</span>
+      <span>💭 Renung</span>
+    </button>
+    <button class="phase-btn" data-phase="3" onclick="tukarFasa(3)">
+      <span class="p-num">Fasa 3</span>
+      <span>🧠 Faham</span>
+    </button>
+    <button class="phase-btn" data-phase="4" onclick="tukarFasa(4)">
+      <span class="p-num">Fasa 4</span>
+      <span>🚀 Cuba</span>
+    </button>
+  </nav>
+
+  <main class="container">
+    <!-- LACI LENCANA GANJARAN -->
+    <div id="badgeDrawer" class="badge-drawer">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <strong style="font-size:0.86rem; color:#92400e;">🏅 Koleksi Lencana Kembara Akidah</strong>
+        <button class="btn-mini" onclick="toggleBadgeDrawer()">Tutup ✕</button>
+      </div>
+      <div id="badgeList" class="badge-list"></div>
+    </div>
+
+    <!-- WATAK PEMANDU & SOKONGAN DIALOG (5 ELEMEN OINAS-KUKKONEN & HARJUMAA, 2009) -->
+    <section id="guideBox" class="guide-box" aria-live="polite">
+      <div class="guide-avatar" aria-hidden="true">
+        <!-- Ilustrasi SVG Ustaz Rayyan -->
+        <svg viewBox="0 0 100 100" width="58" height="58">
+          <circle cx="50" cy="50" r="50" fill="#e0f2fe"/>
+          <!-- Baju Melayu -->
+          <path d="M20 96 C22 74, 78 74, 80 96 Z" fill="#0d9488"/>
+          <path d="M44 74 L50 86 L56 74 Z" fill="#ffffff"/>
+          <!-- Leher & Kepala -->
+          <rect x="43" y="60" width="14" height="14" rx="5" fill="#f1c27d"/>
+          <ellipse cx="50" cy="45" rx="18" ry="21" fill="#f5cfa0"/>
+          <!-- Songkok -->
+          <path d="M31 31 Q50 25 69 31 L67 17 Q50 13 33 17 Z" fill="#0f172a"/>
+          <!-- Mata & Senyuman -->
+          <circle cx="43" cy="44" r="2.3" fill="#1e293b"/>
+          <circle cx="57" cy="44" r="2.3" fill="#1e293b"/>
+          <path d="M43 53 Q50 59 57 53" stroke="#1e293b" stroke-width="2.3" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="guide-content">
+        <div class="guide-header">
+          <span class="guide-name">Ustaz Rayyan</span>
+          <span id="dialogBadge" class="dialog-badge badge-PENCETUS">PENCETUS</span>
+        </div>
+        <p id="dialogText" class="guide-text">
+          Assalamualaikum! Selamat datang ke <strong>Jejak Tanda Akhirat</strong>. Mari kita terokai 6 kad tanda hari kiamat dalam Fasa 1 (Alami) dengan klik gambar kad atau imbas kad bercetak menggunakan kamera AR.
+        </p>
+      </div>
+    </section>
+
+    <!-- ==================== FASA 1: ALAMI ==================== -->
+    <section id="fasa1" class="phase-section active">
+      <div class="phase-banner p1-banner">
+        <h2>Fasa 1: ALAMI — Teroka Kad Tanda Hari Kiamat</h2>
+        <p>Kenal pasti dan kelaskan 6 contoh tanda-tanda kecil dan tanda-tanda besar hari kiamat melalui imbasan kamera AR atau klik kad.</p>
+      </div>
+
+      <div class="card-panel">
+        <!-- Dua Butang Mula Wajib -->
+        <div class="mode-buttons">
+          <button id="btnModKlik" class="btn btn-p1-outline" onclick="aktifkanModKlik()">
+            ✋ Tanpa kamera: klik gambar kad
+          </button>
+          <button id="btnModAR" class="btn btn-p1" onclick="mulakanKameraAR()">
+            📷 Dengan kamera: imbas kad (AR)
+          </button>
+        </div>
+
+        <!-- 3 Misi Berurutan -->
+        <div class="mission-box">
+          <div class="mission-title">🎯 Misi Berurutan Fasa Alami (<span id="misiProgressText">Misi 1/3</span>)</div>
+          <ul class="mission-list">
+            <li id="misiItem1" class="mission-item current">
+              <span><strong>Misi 1:</strong> Teroka mana-mana 3 kad tanda hari kiamat.</span>
+              <span id="misiCount1">0/3</span>
+            </li>
+            <li id="misiItem2" class="mission-item">
+              <span><strong>Misi 2:</strong> Cari &amp; pilih kad kategori <em>Tanda Kecil Hari Kiamat</em> (2 kali).</span>
+              <span id="misiCount2">0/2</span>
+            </li>
+            <li id="misiItem3" class="mission-item">
+              <span><strong>Misi 3:</strong> Kumpul kesemua 6 kad tanda hari kiamat.</span>
+              <span id="misiCount3">0/6</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Paparan Maklumat di Atas Kad Apabila Diimbas/Diklik -->
+        <div id="cardOverlayViewer" class="card-overlay-viewer">
+          <span id="overlayKategori" class="overlay-tag tag-kecil">Sedia Meneroka</span>
+          <h3 id="overlayNama" style="margin:2px 0 4px; font-size:1.05rem;">Klik atau imbas mana-mana kad di bawah</h3>
+          <p id="overlayInfo" style="margin:0; font-size:0.86rem; color:#e2e8f0;">
+            Maklumat terperinci tanda kecil atau tanda besar hari kiamat akan muncul terus di atas paparan ini apabila kad dikesan.
+          </p>
+        </div>
+
+        <!-- Grid 6 Kad Interaktif -->
+        <div id="cardsGrid" class="cards-grid"></div>
+
+        <div style="margin-top:14px; display:flex; justify-content:flex-end;">
+          <button class="btn btn-p2" onclick="tukarFasa(2)">Teruskan ke Fasa 2: Renung ➡️</button>
+        </div>
+
+        <!-- Kad untuk dicetak (guru) -->
+        <details class="print-section">
+          <summary>🖨️ Kad untuk dicetak (guru)</summary>
+          <p style="font-size:0.82rem; color:var(--muted); margin:8px 0;">
+            Cetak 6 kad penanda AR di bawah untuk aktiviti imbasan kamera murid di dalam kelas.
+          </p>
+          <button class="btn btn-secondary no-print" onclick="window.print()">🖨️ Cetak Halaman Kad</button>
+          <div id="bekasKadCetak"></div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ==================== FASA 2: RENUNG ==================== -->
+    <section id="fasa2" class="phase-section">
+      <div class="phase-banner p2-banner">
+        <h2>Fasa 2: RENUNG — Analisis Perubahan &amp; Rumusan</h2>
+        <p>Jawab 3 soalan berpandu "Apa yang berubah apabila…" dan lengkapkan satu ayat rumusan menggunakan suara atau taip.</p>
+      </div>
+
+      <div class="card-panel">
+        <!-- Soalan Renung 1 -->
+        <div class="reflect-q">
+          <h4>1. Apa yang berubah apabila sesuatu peristiwa seperti <em>amanah disia-siakan</em> dibandingkan dengan peristiwa <em>matahari terbit dari sebelah barat</em> dalam pengelasan kad kamu?</h4>
+          <textarea id="renungInput1" class="input-box" rows="2" placeholder="Taip atau tekan butang mikrofon untuk menjawab..."></textarea>
+          <div class="action-row">
+            <button class="btn btn-mic" onclick="mulaSuara('renungInput1', () => semakRenung(1))">🎤 Jawab Suara</button>
+            <button class="btn btn-p2" onclick="semakRenung(1)">✅ Semak Jawapan</button>
+          </div>
+          <div id="renungFb1" class="feedback-inline"></div>
+        </div>
+
+        <!-- Soalan Renung 2 -->
+        <div class="reflect-q">
+          <h4>2. Apa yang berubah apabila <em>keluarnya Dajjal</em> berlaku dan diikuti dengan <em>turunnya Nabi Isa a.s.</em> berdasarkan kad yang telah kamu kumpul?</h4>
+          <textarea id="renungInput2" class="input-box" rows="2" placeholder="Taip atau tekan butang mikrofon untuk menjawab..."></textarea>
+          <div class="action-row">
+            <button class="btn btn-mic" onclick="mulaSuara('renungInput2', () => semakRenung(2))">🎤 Jawab Suara</button>
+            <button class="btn btn-p2" onclick="semakRenung(2)">✅ Semak Jawapan</button>
+          </div>
+          <div id="renungFb2" class="feedback-inline"></div>
+        </div>
+
+        <!-- Soalan Renung 3 -->
+        <div class="reflect-q">
+          <h4>3. Apa yang berubah pada sikap dan persediaan seorang murid Tingkatan 3 apabila dia benar-benar memahami tanda-tanda kecil, tanda-tanda besar dan kronologi fasa hari akhirat?</h4>
+          <textarea id="renungInput3" class="input-box" rows="2" placeholder="Taip atau tekan butang mikrofon untuk menjawab..."></textarea>
+          <div class="action-row">
+            <button class="btn btn-mic" onclick="mulaSuara('renungInput3', () => semakRenung(3))">🎤 Jawab Suara</button>
+            <button class="btn btn-p2" onclick="semakRenung(3)">✅ Semak Jawapan</button>
+          </div>
+          <div id="renungFb3" class="feedback-inline"></div>
+        </div>
+
+        <!-- Satu Ayat Rumusan (Taip atau Cakap) -->
+        <div class="reflect-q" style="border-color:#93c5fd; background:#eff6ff;">
+          <h4>✍️ Satu Ayat Rumusan Pelajaran (Taip atau Cakap)</h4>
+          <p style="font-size:0.83rem; color:#1e40af; margin:0 0 8px;">
+            Lengkapkan rumusan berdasarkan kad yang dikumpul: <em>"Hari kiamat didahului oleh tanda-tanda kecil seperti ________ dan tanda-tanda besar seperti ________, maka kita hendaklah sentiasa ________ sebagai persediaan menghadapi fasa hari akhirat."</em>
+          </p>
+          <textarea id="rumusanInput" class="input-box" rows="2" placeholder="Sebut atau taip satu ayat rumusan lengkap kamu di sini..."></textarea>
+          <div class="action-row">
+            <button class="btn btn-mic" onclick="mulaSuara('rumusanInput', () => semakRumusan())">🎤 Sebut Rumusan</button>
+            <button class="btn btn-p2" onclick="semakRumusan()">✅ Semak Rumusan</button>
+          </div>
+          <div id="rumusanFb" class="feedback-inline"></div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap;">
+          <button class="btn btn-secondary" onclick="tukarFasa(1)">⬅️ Fasa 1: Alami</button>
+          <button class="btn btn-p3" onclick="tukarFasa(3)">Teruskan ke Fasa 3: Faham ➡️</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== FASA 3: FAHAM ==================== -->
+    <section id="fasa3" class="phase-section">
+      <div class="phase-banner p3-banner">
+        <h2>Fasa 3: FAHAM — Konsep Utama &amp; Kuiz AI Adaptif</h2>
+        <p>Kuasai tiga konsep utama daripada kad yang dikumpul dan uji kefahaman melalui kuiz adaptif logik kabur.</p>
+      </div>
+
+      <div class="card-panel">
+        <!-- Konsep Dinamakan Menggunakan Kad Murid -->
+        <div class="concept-chips">
+          <div class="concept-chip">
+            <strong>Konsep 1: Tanda-tanda Kecil Hari Kiamat</strong>
+            <span>Contoh kad: <em>Amanah disia-siakan</em> dan <em>berlakunya banyak pembunuhan</em>.</span>
+          </div>
+          <div class="concept-chip">
+            <strong>Konsep 2: Tanda-tanda Besar Hari Kiamat</strong>
+            <span>Contoh kad: <em>Keluarnya Dajjal</em>, <em>turunnya Nabi Isa a.s.</em>, <em>keluarnya Yakjuj dan Makjuj</em>, <em>matahari terbit dari sebelah barat</em>.</span>
+          </div>
+          <div class="concept-chip">
+            <strong>Konsep 3: Perbezaan Tanda &amp; Kronologi Akhirat</strong>
+            <span>Urutan fasa hari akhirat (Alam Barzakh → Kebangkitan → Mahsyar → Hisab → Mizan → Sirat → Syurga/Neraka) dan amalan soleh.</span>
+          </div>
+        </div>
+
+        <!-- Panel Status AI Adaptif -->
+        <div class="ai-panel-bar">
+          <span>🤖 Panel AI Adaptif (Logik Kabur): <span id="aiLevelDisplay">Tahap 1 — Mudah</span></span>
+          <button class="btn-mini" onclick="kemasKiniPanelAI()">🔄 Kemas Kini Tahap</button>
+        </div>
+
+        <!-- Elemen Kosong untuk AIAdaptif.kuiz -->
+        <div id="kuizAdaptifContainer"></div>
+
+        <!-- Aktiviti Pembetulan & Semakan Lisan/Bertulis bagi Setiap Konsep -->
+        <div style="margin-top:16px;">
+          <h3 style="font-size:0.98rem; margin:0 0 8px; color:var(--p3-dark);">🛠️ Aktiviti Pembetulan &amp; Latihan Sebutan Konsep</h3>
+          <p style="font-size:0.82rem; color:var(--muted); margin:0 0 10px;">
+            Sebut atau taip semula istilah penting setiap konsep untuk mengukuhkan ingatan (semakan automatik).
+          </p>
+
+          <div class="remediation-card">
+            <strong style="font-size:0.88rem; color:#581c87;">1. Pembetulan Konsep Tanda Kecil Hari Kiamat</strong>
+            <p style="font-size:0.82rem; margin:4px 0 8px;">Sebut atau taip dua contoh tanda kecil daripada kad: <em>"Amanah disia-siakan dan berlakunya banyak pembunuhan"</em>.</p>
+            <input id="remInput1" class="input-box" type="text" placeholder="Sebut atau taip frasa sasaran..." />
+            <div class="action-row">
+              <button class="btn btn-mic" onclick="mulaSuara('remInput1', () => semakPembetulan(1))">🎤 Sebut &amp; Semak</button>
+              <button class="btn btn-p3" onclick="semakPembetulan(1)">✅ Semak</button>
+            </div>
+            <div id="remFb1" class="feedback-inline"></div>
+          </div>
+
+          <div class="remediation-card">
+            <strong style="font-size:0.88rem; color:#581c87;">2. Pembetulan Konsep Tanda Besar Hari Kiamat</strong>
+            <p style="font-size:0.82rem; margin:4px 0 8px;">Sebut atau taip tanda besar yang menutup pintu taubat: <em>"Matahari terbit dari sebelah barat"</em>.</p>
+            <input id="remInput2" class="input-box" type="text" placeholder="Sebut atau taip frasa sasaran..." />
+            <div class="action-row">
+              <button class="btn btn-mic" onclick="mulaSuara('remInput2', () => semakPembetulan(2))">🎤 Sebut &amp; Semak</button>
+              <button class="btn btn-p3" onclick="semakPembetulan(2)">✅ Semak</button>
+            </div>
+            <div id="remFb2" class="feedback-inline"></div>
+          </div>
+
+          <div class="remediation-card">
+            <strong style="font-size:0.88rem; color:#581c87;">3. Pembetulan Kronologi Fasa Hari Akhirat</strong>
+            <p style="font-size:0.82rem; margin:4px 0 8px;">Sebut atau taip amalan persediaan utama: <em>"Sentiasa beramal soleh"</em>.</p>
+            <input id="remInput3" class="input-box" type="text" placeholder="Sebut atau taip frasa sasaran..." />
+            <div class="action-row">
+              <button class="btn btn-mic" onclick="mulaSuara('remInput3', () => semakPembetulan(3))">🎤 Sebut &amp; Semak</button>
+              <button class="btn btn-p3" onclick="semakPembetulan(3)">✅ Semak</button>
+            </div>
+            <div id="remFb3" class="feedback-inline"></div>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap; margin-top:12px;">
+          <button class="btn btn-secondary" onclick="tukarFasa(2)">⬅️ Fasa 2: Renung</button>
+          <button class="btn btn-p4" onclick="tukarFasa(4)">Teruskan ke Fasa 4: Cuba ➡️</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== FASA 4: CUBA ==================== -->
+    <section id="fasa4" class="phase-section">
+      <div class="phase-banner p4-banner">
+        <h2>Fasa 4: CUBA — Ramal &amp; Uji Situasi Baharu</h2>
+        <p>Gunakan unsur kad untuk meramal jawapan terlebih dahulu, kemudian susun dan uji keputusan kamu.</p>
+      </div>
+
+      <div class="card-panel">
+        <div class="ai-panel-bar" style="background:#fef3c7; border-color:#fcd34d; color:#92400e;">
+          <span>🎯 Cadangan Cabaran AI Adaptif: <strong id="cubaRecText">Situasi 1 (Tahap 1: Mudah)</strong></span>
+        </div>
+
+        <!-- SITUASI 1 (Tahap 1: Mudah) -->
+        <div id="simCard1" class="sim-card">
+          <span id="recBadge1" class="rec-tag" style="display:none;">⭐ Dicadangkan oleh AI Adaptif</span>
+          <h3 style="margin:0 0 6px; font-size:0.98rem; color:#92400e;">Situasi 1 (Tahap 1 — Mudah): Membina Peta Klasifikasi "Kotak Tanda Kiamat"</h3>
+          <p style="font-size:0.84rem; margin:0 0 8px;">
+            <strong>Langkah 1 (Ramal Dahulu):</strong> Daripada 6 kad tanda hari kiamat, ramalkan berapa bilangan kad Tanda Kecil dan Tanda Besar sebelum menyusunnya.
+          </p>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px;">
+            <div>
+              <label style="font-size:0.78rem; font-weight:700;">Ramalan Bilangan Tanda Kecil:</label>
+              <select id="ramal1Kecil" class="input-box">
+                <option value="">-- Pilih ramalan --</option>
+                <option value="1">1 kad</option>
+                <option value="2">2 kad</option>
+                <option value="3">3 kad</option>
+                <option value="4">4 kad</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:0.78rem; font-weight:700;">Ramalan Bilangan Tanda Besar:</label>
+              <select id="ramal1Besar" class="input-box">
+                <option value="">-- Pilih ramalan --</option>
+                <option value="2">2 kad</option>
+                <option value="3">3 kad</option>
+                <option value="4">4 kad</option>
+                <option value="5">5 kad</option>
+              </select>
+            </div>
+          </div>
+
+          <p style="font-size:0.84rem; margin:0 0 8px;">
+            <strong>Langkah 2 (Susun &amp; Uji):</strong> Kelaskan setiap unsur kad ke dalam bakul yang betul.
+          </p>
+          <div id="sim1List"></div>
+          <button class="btn btn-p4" style="margin-top:8px;" onclick="ujiSituasi1()">🔍 Semak Susunan &amp; Ramalan</button>
+          <div id="sim1Fb" class="feedback-inline"></div>
+        </div>
+
+        <!-- SITUASI 2 (Tahap 2: Sederhana) -->
+        <div id="simCard2" class="sim-card">
+          <span id="recBadge2" class="rec-tag" style="display:none;">⭐ Dicadangkan oleh AI Adaptif</span>
+          <h3 style="margin:0 0 6px; font-size:0.98rem; color:#92400e;">Situasi 2 (Tahap 2 — Sederhana): Menyusun Garis Masa Kemunculan Tanda Besar</h3>
+          <p style="font-size:0.84rem; margin:0 0 8px;">
+            <strong>Langkah 1 (Ramal Dahulu):</strong> Ramalkan peristiwa tanda besar manakah yang berlaku paling awal dan peristiwa manakah yang menandakan pintu taubat ditutup.
+          </p>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px;">
+            <div>
+              <label style="font-size:0.78rem; font-weight:700;">Ramalan Berlaku Paling Awal:</label>
+              <select id="ramal2Awal" class="input-box">
+                <option value="">-- Pilih ramalan --</option>
+                <option value="Keluarnya Dajjal">Keluarnya Dajjal</option>
+                <option value="Turunnya Nabi Isa a.s.">Turunnya Nabi Isa a.s.</option>
+                <option value="Keluarnya Yakjuj dan Makjuj">Keluarnya Yakjuj dan Makjuj</option>
+                <option value="Matahari Terbit dari Sebelah Barat">Matahari Terbit dari Sebelah Barat</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:0.78rem; font-weight:700;">Ramalan Pintu Taubat Ditutup:</label>
+              <select id="ramal2Akhir" class="input-box">
+                <option value="">-- Pilih ramalan --</option>
+                <option value="Keluarnya Dajjal">Keluarnya Dajjal</option>
+                <option value="Turunnya Nabi Isa a.s.">Turunnya Nabi Isa a.s.</option>
+                <option value="Keluarnya Yakjuj dan Makjuj">Keluarnya Yakjuj dan Makjuj</option>
+                <option value="Matahari Terbit dari Sebelah Barat">Matahari Terbit dari Sebelah Barat</option>
+              </select>
+            </div>
+          </div>
+
+          <p style="font-size:0.84rem; margin:0 0 8px;">
+            <strong>Langkah 2 (Susun &amp; Uji):</strong> Gunakan butang ⬆️ / ⬇️ untuk menyusun urutan kemunculan 4 tanda besar dari atas ke bawah.
+          </p>
+          <div id="sim2List"></div>
+          <button class="btn btn-p4" style="margin-top:8px;" onclick="ujiSituasi2()">🔍 Uji Garis Masa</button>
+          <div id="sim2Fb" class="feedback-inline"></div>
+        </div>
+
+        <!-- SITUASI 3 (Tahap 3: Sukar) -->
+        <div id="simCard3" class="sim-card">
+          <span id="recBadge3" class="rec-tag" style="display:none;">⭐ Dicadangkan oleh AI Adaptif</span>
+          <h3 style="margin:0 0 6px; font-size:0.98rem; color:#92400e;">Situasi 3 (Tahap 3 — Sukar): Cabaran Misi Kronologi Fasa Hari Akhirat</h3>
+          <p style="font-size:0.84rem; margin:0 0 8px;">
+            <strong>Senario:</strong> Seorang murid Tingkatan 3 sentiasa menjaga <em>amanah</em> dan istiqamah <em>beramal soleh</em> di dunia.
+            <br><strong>Langkah 1 (Ramal Dahulu):</strong> Ramalkan fasa pertama selepas kematian dan pengakhiran abadi bagi orang yang beramal soleh.
+          </p>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px;">
+            <div>
+              <label style="font-size:0.78rem; font-weight:700;">Ramalan Fasa Pertama Selepas Mati:</label>
+              <select id="ramal3Mula" class="input-box">
+                <option value="">-- Pilih ramalan --</option>
+                <option value="Alam Barzakh">Alam Barzakh (Alam Kubur)</option>
+                <option value="Perhimpunan (Mahsyar)">Perhimpunan (Mahsyar)</option>
+                <option value="Titian Sirat">Titian Sirat</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:0.78rem; font-weight:700;">Ramalan Pengakhiran Orang Beramal Soleh:</label>
+              <select id="ramal3Akhir" class="input-box">
+                <option value="">-- Pilih ramalan --</option>
+                <option value="Syurga">Syurga</option>
+                <option value="Neraka">Neraka</option>
+              </select>
+            </div>
+          </div>
+
+          <p style="font-size:0.84rem; margin:0 0 8px;">
+            <strong>Langkah 2 (Susun &amp; Uji):</strong> Susun kad kronologi fasa hari akhirat mengikut urutan yang betul (1 hingga 7).
+          </p>
+          <div id="sim3List"></div>
+          <button class="btn btn-p4" style="margin-top:8px;" onclick="ujiSituasi3()">🔍 Uji Kronologi Akhirat</button>
+          <div id="sim3Fb" class="feedback-inline"></div>
+        </div>
+
+        <div style="display:flex; justify-content:flex-start;">
+          <button class="btn btn-secondary" onclick="tukarFasa(3)">⬅️ Kembali ke Fasa 3: Faham</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER KREDIT WAJIB -->
+  <footer class="app-footer">
+    <p>Berdasarkan template DidikARealiti AI © 2026 FTSM, Universiti Kebangsaan Malaysia (CC BY-NC-SA 4.0)</p>
+    <p>Diadaptasi oleh Guru Pendidikan Islam, SMK Putrajaya Presint 11(2)</p>
+  </footer>
+
+  <script>
+    /* =====================================================================
+       1. DATA UTAMA DARIPADA JADUAL PERANCANGAN YANG DISAHKAN
+       ===================================================================== */
+    const STORAGE_KEY = "didik_ar_kiamat_t3_v1";
+
+    // Setiap item dalam WORDS ialah satu kad dan satu penanda AR (urutan 0..5)
+    const WORDS = [
+      {
+        nama: "Amanah Disia-siakan",
+        kategori: "Tanda Kecil",
+        info: "Tanda Kecil Hari Kiamat — Tanggungjawab dan kepercayaan tidak lagi dijaga oleh manusia dalam kehidupan harian."
+      },
+      {
+        nama: "Berlakunya Banyak Pembunuhan",
+        kategori: "Tanda Kecil",
+        info: "Tanda Kecil Hari Kiamat — Kes pembunuhan dan pertumpahan darah berleluasa dalam masyarakat tanpa sebab yang munasabah."
+      },
+      {
+        nama: "Keluarnya Dajjal",
+        kategori: "Tanda Besar",
+        info: "Tanda Besar Hari Kiamat — Kemunculan Dajjal yang membawa fitnah besar untuk menyesatkan manusia sebelum berlakunya kiamat."
+      },
+      {
+        nama: "Turunnya Nabi Isa a.s.",
+        kategori: "Tanda Besar",
+        info: "Tanda Besar Hari Kiamat — Nabi Isa a.s. diturunkan semula ke bumi untuk menegakkan kebenaran dan menewaskan Dajjal."
+      },
+      {
+        nama: "Keluarnya Yakjuj dan Makjuj",
+        kategori: "Tanda Besar",
+        info: "Tanda Besar Hari Kiamat — Kemunculan golongan perosak yang ramai dan melakukan kerosakan besar di muka bumi."
+      },
+      {
+        nama: "Matahari Terbit dari Sebelah Barat",
+        kategori: "Tanda Besar",
+        info: "Tanda Besar Hari Kiamat — Perubahan luar biasa sistem alam apabila matahari terbit dari arah barat, menandakan pintu taubat ditutup."
+      }
+    ];
+
+    const BADGES_META = [
+      { id: "peneroka", title: "Peneroka Tanda (Misi 1)" },
+      { id: "pengelas", title: "Pengelas Tanda Kecil (Misi 2)" },
+      { id: "pengumpul", title: "Pengumpul 6 Kad (Misi 3)" },
+      { id: "pemikir", title: "Pemikir Reflektif (Renung)" },
+      { id: "cendekiawan", title: "Cendekiawan Akidah (Faham)" },
+      { id: "pengamal", title: "Pengamal Soleh (Cuba)" }
+    ];
+
+    // Bank 9 Soalan (3 Mudah lvl:1, 3 Sederhana lvl:2, 3 Sukar lvl:3)
+    const SOALAN_KUIZ = [
+      // MUDAH (lvl: 1)
+      {
+        lvl: 1,
+        c: "tanda_kecil",
+        t: "Manakah antara berikut merupakan contoh tanda kecil hari kiamat?",
+        o: [
+          "Amanah disia-siakan",
+          "Keluarnya Dajjal",
+          "Turunnya Nabi Isa a.s.",
+          "Matahari terbit dari sebelah barat"
+        ],
+        a: "Amanah disia-siakan",
+        h: "Perkara ini melibatkan sikap manusia yang tidak lagi bertanggungjawab menjaga kepercayaan yang diberikan."
+      },
+      {
+        lvl: 1,
+        c: "tanda_besar",
+        t: "Antara berikut, yang manakah tergolong dalam tanda besar hari kiamat?",
+        o: [
+          "Keluarnya Yakjuj dan Makjuj",
+          "Berlakunya banyak pembunuhan",
+          "Amanah disia-siakan",
+          "Murid tidak menyiapkan tugasan sekolah"
+        ],
+        a: "Keluarnya Yakjuj dan Makjuj",
+        h: "Ia merupakan kemunculan golongan yang membawa kerosakan besar menjelang hari kiamat."
+      },
+      {
+        lvl: 1,
+        c: "kronologi_akhirat",
+        t: "Apakah amalan utama yang ditekankan sebagai persediaan menghadapi hari akhirat?",
+        o: [
+          "Sentiasa beramal soleh",
+          "Mensia-siakan amanah",
+          "Mengabaikan pelajaran",
+          "Menunggu tanda besar tanpa beribadah"
+        ],
+        a: "Sentiasa beramal soleh",
+        h: "Amalan kebaikan yang dilakukan secara berterusan kerana beriman kepada Allah dan hari akhirat."
+      },
+      // SEDERHANA (lvl: 2)
+      {
+        lvl: 2,
+        c: "tanda_kecil",
+        t: "Pilih pasangan contoh tanda kecil hari kiamat yang tepat.",
+        o: [
+          "Amanah disia-siakan dan berlakunya banyak pembunuhan",
+          "Keluarnya Dajjal dan turunnya Nabi Isa a.s.",
+          "Berlakunya banyak pembunuhan dan keluarnya Yakjuj dan Makjuj",
+          "Amanah disia-siakan dan matahari terbit dari sebelah barat"
+        ],
+        a: "Amanah disia-siakan dan berlakunya banyak pembunuhan",
+        h: "Kedua-dua peristiwa ini berkaitan dengan keruntuhan akhlak dan jenayah sesama manusia."
+      },
+      {
+        lvl: 2,
+        c: "tanda_besar",
+        t: "Siapakah nabi yang akan diturunkan semula ke bumi sebagai salah satu tanda besar hari kiamat?",
+        o: [
+          "Nabi Isa a.s.",
+          "Nabi Musa a.s.",
+          "Nabi Ibrahim a.s.",
+          "Nabi Nuh a.s."
+        ],
+        a: "Nabi Isa a.s.",
+        h: "Baginda diturunkan selepas kemunculan Dajjal."
+      },
+      {
+        lvl: 2,
+        c: "kronologi_akhirat",
+        t: "Apakah fasa pertama yang dilalui oleh setiap manusia selepas kematian sebelum berlakunya kiamat besar dalam kronologi hari akhirat?",
+        o: [
+          "Alam Barzakh (alam kubur)",
+          "Perhimpunan di Mahsyar",
+          "Titian Sirat",
+          "Timbangan Mizan"
+        ],
+        a: "Alam Barzakh (alam kubur)",
+        h: "Ia merupakan alam pemisah antara dunia dan akhirat sebaik sahaja seseorang meninggal dunia."
+      },
+      // SUKAR (lvl: 3)
+      {
+        lvl: 3,
+        c: "tanda_kecil",
+        t: "Mengapakah peristiwa berlakunya banyak pembunuhan dikategorikan sebagai tanda kecil, manakala matahari terbit dari sebelah barat dikategorikan sebagai tanda besar?",
+        o: [
+          "Pembunuhan ialah kerosakan sosial yang berlaku sebelum kiamat, manakala matahari terbit dari barat ialah perubahan luar biasa sistem alam yang menandakan kiamat sudah terlalu hampir",
+          "Pembunuhan hanya berlaku di satu negara, manakala matahari terbit dari barat berlaku pada waktu malam",
+          "Kedua-duanya ialah tanda besar, tetapi pembunuhan berlaku lebih awal",
+          "Pembunuhan tidak memberi kesan kepada manusia, manakala matahari terbit dari barat berlaku setiap tahun"
+        ],
+        a: "Pembunuhan ialah kerosakan sosial yang berlaku sebelum kiamat, manakala matahari terbit dari barat ialah perubahan luar biasa sistem alam yang menandakan kiamat sudah terlalu hampir",
+        h: "Bandingkan sifat kejadian biasa dalam masyarakat manusia dengan kejadian luar biasa yang mengubah hukum alam."
+      },
+      {
+        lvl: 3,
+        c: "tanda_besar",
+        t: "Susunkan tiga tanda besar hari kiamat berikut mengikut urutan peristiwa yang betul: (I) Turunnya Nabi Isa a.s., (II) Keluarnya Dajjal, (III) Keluarnya Yakjuj dan Makjuj.",
+        o: [
+          "(II), (I), (III)",
+          "(I), (II), (III)",
+          "(III), (II), (I)",
+          "(II), (III), (I)"
+        ],
+        a: "(II), (I), (III)",
+        h: "Dajjal muncul terlebih dahulu, kemudian Nabi Isa a.s. turun menewaskannya, diikuti kemunculan Yakjuj dan Makjuj."
+      },
+      {
+        lvl: 3,
+        c: "kronologi_akhirat",
+        t: "Pilih susunan kronologi fasa hari akhirat yang tepat bermula selepas manusia dibangkitkan daripada kubur.",
+        o: [
+          "Kebangkitan (Ba'ath) → Perhimpunan (Mahsyar) → Hisab → Mizan → Sirat → Syurga atau Neraka",
+          "Kebangkitan (Ba'ath) → Sirat → Mizan → Hisab → Mahsyar → Syurga atau Neraka",
+          "Mahsyar → Kebangkitan (Ba'ath) → Mizan → Sirat → Hisab → Syurga atau Neraka",
+          "Kebangkitan (Ba'ath) → Hisab → Mahsyar → Sirat → Mizan → Syurga atau Neraka"
+        ],
+        a: "Kebangkitan (Ba'ath) → Perhimpunan (Mahsyar) → Hisab → Mizan → Sirat → Syurga atau Neraka",
+        h: "Manusia dibangkitkan dahulu, dihimpunkan di padang yang luas, dihitung amalan, ditimbang amalan, lalu meniti jambatan menuju pengakhiran abadi."
+      }
+    ];
+
+    const PEMBETULAN_KONSEP = {
+      tanda_kecil: {
+        t: "Tanda-tanda Kecil Hari Kiamat",
+        d: "Tanda kecil berlaku dalam kehidupan manusia sebelum kiamat, seperti amanah disia-siakan dan berlakunya banyak pembunuhan. Asingkan semula 2 kad ini dan sebutkan kedua-duanya secara lisan."
+      },
+      tanda_besar: {
+        t: "Tanda-tanda Besar Hari Kiamat",
+        d: "Tanda besar ialah kejadian luar biasa menandakan kiamat sudah sangat hampir: keluarnya Dajjal, turunnya Nabi Isa a.s., keluarnya Yakjuj dan Makjuj, serta matahari terbit dari sebelah barat."
+      },
+      kronologi_akhirat: {
+        t: "Perbezaan Tanda Kiamat & Kronologi Fasa Hari Akhirat",
+        d: "Susunan kronologi hari akhirat: Alam Barzakh → Kebangkitan (Ba'ath) → Perhimpunan (Mahsyar) → Hisab → Mizan → Sirat → Syurga atau Neraka. Sentiasalah beramal soleh sebagai persediaan."
+      }
+    };
+
+    /* =====================================================================
+       2. KEADAAN APLIKASI & PENYIMPANAN TEMPATAN (localStorage)
+       ===================================================================== */
+    let state = {
+      phase: 1,
+      stars: 0,
+      badges: [],
+      collectedCards: [], // indeks kad 0..5
+      tandaKecilMatched: [], // indeks tanda kecil dijumpai dalam misi 2
+      misiDone: [false, false, false],
+      renungDone: [false, false, false, false],
+      cubaDone: [false, false, false]
+    };
+
+    function muatState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          state = Object.assign(state, parsed);
+        }
+      } catch (e) {
+        console.warn("Ralat membaca localStorage:", e);
+      }
+    }
+
+    function simpanState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (e) {
+        console.warn("Ralat menyimpan localStorage:", e);
+      }
+    }
+
+    /* =====================================================================
+       3. SOKONGAN DIALOG (OINAS-KUKKONEN & HARJUMAA, 2009) + PEMASA 25 SAAT
+       ===================================================================== */
+    let idleTimer = null;
+
+    function paparMesejPemandu(jenis, teks) {
+      const jenisNormal = (jenis || "PENCETUS").toUpperCase();
+      const mapLabel = {
+        PENCETUS: "PENCETUS",
+        PERINGATAN: "PERINGATAN",
+        CADANGAN: "CADANGAN",
+        PUJIAN: "PUJIAN",
+        GANJARAN: "GANJARAN"
+      };
+      const label = mapLabel[jenisNormal] || "PENCETUS";
+      const badgeEl = document.getElementById("dialogBadge");
+      const textEl = document.getElementById("dialogText");
+      if (badgeEl) {
+        badgeEl.textContent = label;
+        badgeEl.className = "dialog-badge badge-" + label;
+      }
+      if (textEl) {
+        textEl.innerHTML = teks;
+      }
+    }
+
+    function beriGanjaran(bintang, idLencana, sebab) {
+      let adaLencanaBaharu = false;
+      if (bintang > 0) {
+        state.stars += bintang;
+      }
+      if (idLencana && !state.badges.includes(idLencana)) {
+        state.badges.push(idLencana);
+        adaLencanaBaharu = true;
+      }
+      simpanState();
+      kemasKiniHeaderGanjaran();
+
+      if (adaLencanaBaharu) {
+        const infoB = BADGES_META.find(b => b.id === idLencana);
+        paparMesejPemandu(
+          "GANJARAN",
+          `Tahniah! Kamu memperoleh +${bintang} ★ dan lencana baharu <strong>🏅 ${infoB ? infoB.title : idLencana}</strong> (${sebab}).`
+        );
+      } else if (bintang > 0) {
+        paparMesejPemandu(
+          "GANJARAN",
+          `Hebat! Kamu menerima +${bintang} ★ kerana ${sebab}. Teruskan usaha!`
+        );
+      }
+    }
+
+    function kemasKiniHeaderGanjaran() {
+      document.getElementById("starCount").textContent = state.stars;
+      document.getElementById("badgeCount").textContent = state.badges.length;
+      const listEl = document.getElementById("badgeList");
+      listEl.innerHTML = BADGES_META.map(b => {
+        const unlocked = state.badges.includes(b.id);
+        return `<span class="badge-item ${unlocked ? "unlocked" : ""}">${unlocked ? "🏅" : "🔒"} ${b.title}</span>`;
+      }).join("");
+    }
+
+    function toggleBadgeDrawer() {
+      document.getElementById("badgeDrawer").classList.toggle("open");
+    }
+
+    // Peringatan automatik selepas 25 saat tiada tindakan
+    function setSemulaPemasaPeringatan() {
+      if (idleTimer) clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => {
+        const peringatanIkutFasa = {
+          1: "Masa 25 saat berlalu. Klik salah satu gambar kad di bawah atau tekan butang kamera AR untuk meneruskan misi Fasa Alami!",
+          2: "Kamu berhenti seketika di Fasa Renung. Cuba guna butang mikrofon 🎤 atau taip jawapan ringkas berdasarkan kad yang dikumpul.",
+          3: "Jangan berhenti di Fasa Faham! Pilih jawapan dalam kuiz AI adaptif atau cuba latihan sebutan konsep di bawah.",
+          4: "Ayuh teruskan Fasa Cuba! Buat pilihan ramalan dahulu, kemudian tekan butang Uji untuk melihat keputusannya."
+        };
+        paparMesejPemandu("PERINGATAN", peringatanIkutFasa[state.phase] || peringatanIkutFasa[1]);
+      }, 25000);
+    }
+
+    ["click", "touchstart", "keydown", "input"].forEach(evt => {
+      document.addEventListener(evt, setSemulaPemasaPeringatan, { passive: true });
+    });
+
+    /* =====================================================================
+       4. NAVIGASI EMPAT FASA (ALAMI, RENUNG, FAHAM, CUBA)
+       ===================================================================== */
+    function tukarFasa(nomborFasa) {
+      state.phase = nomborFasa;
+      simpanState();
+
+      document.querySelectorAll(".phase-btn").forEach(btn => {
+        btn.classList.toggle("active", Number(btn.dataset.phase) === nomborFasa);
+      });
+
+      document.querySelectorAll(".phase-section").forEach((sec, idx) => {
+        sec.classList.toggle("active", idx + 1 === nomborFasa);
+      });
+
+      const warnaFasa = {
+        1: "var(--p1)",
+        2: "var(--p2)",
+        3: "var(--p3)",
+        4: "var(--p4)"
+      };
+      document.getElementById("guideBox").style.borderLeftColor = warnaFasa[nomborFasa];
+
+      const pencetusFasa = {
+        1: `<strong>Mula Fasa 1 (Alami):</strong> ${dapatkanTeksMisiSemasa()} Pilih mod klik kad atau imbas kamera AR.`,
+        2: "<strong>Mula Fasa 2 (Renung):</strong> Renungkan perbezaan tanda kecil dan tanda besar daripada kad yang dikumpul. Jawab 3 soalan dan satu ayat rumusan.",
+        3: "<strong>Mula Fasa 3 (Faham):</strong> Uji kefahaman kamu melalui Kuiz AI Adaptif dan latihan pembetulan konsep.",
+        4: "<strong>Mula Fasa 4 (Cuba):</strong> Ramalkan hasil terlebih dahulu sebelum menyusun dan menguji 3 situasi baharu!"
+      };
+      paparMesejPemandu("PENCETUS", pencetusFasa[nomborFasa]);
+
+      if (nomborFasa === 3) {
+        kemasKiniPanelAI();
+      }
+      if (nomborFasa === 4) {
+        kemasKiniCadanganCuba();
+      }
+      setSemulaPemasaPeringatan();
+    }
+
+    /* =====================================================================
+       5. FASA 1: ALAMI — INTEGRASI PUSTAKA ArKad & 3 MISI BERURUTAN
+       ===================================================================== */
+    function dapatkanTeksMisiSemasa() {
+      if (!state.misiDone[0]) {
+        return `Misi 1/3: Teroka 3 kad tanda hari kiamat (${state.collectedCards.length}/3).`;
+      }
+      if (!state.misiDone[1]) {
+        return `Misi 2/3: Cari 2 kad Tanda Kecil Hari Kiamat (${state.tandaKecilMatched.length}/2).`;
+      }
+      if (!state.misiDone[2]) {
+        return `Misi 3/3: Kumpul kesemua 6 kad tanda hari kiamat (${state.collectedCards.length}/6).`;
+      }
+      return "Semua 3 misi Fasa Alami selesai! Teruskan ke Fasa Renung.";
+    }
+
+    function kendaliKadDijumpai(i, kadObj) {
+      const item = WORDS[i] || kadObj;
+      if (!item) return;
+
+      // Paparkan maklumat di atas kad
+      const overlayKat = document.getElementById("overlayKategori");
+      const overlayNama = document.getElementById("overlayNama");
+      const overlayInfo = document.getElementById("overlayInfo");
+
+      overlayKat.textContent = item.kategori;
+      overlayKat.className = "overlay-tag " + (item.kategori === "Tanda Kecil" ? "tag-kecil" : "tag-besar");
+      overlayNama.textContent = `Kad #${i + 1}: ${item.nama}`;
+      overlayInfo.textContent = item.info;
+
+      // Rekod kad dikumpul
+      if (!state.collectedCards.includes(i)) {
+        state.collectedCards.push(i);
+      }
+
+      let maklumBalasDiberi = false;
+
+      // Semak Misi 1: Teroka 3 kad
+      if (!state.misiDone[0]) {
+        if (state.collectedCards.length >= 3) {
+          state.misiDone[0] = true;
+          beriGanjaran(10, "peneroka", "menyelesaikan Misi 1 (meneroka 3 kad)");
+          maklumBalasDiberi = true;
+        } else {
+          paparMesejPemandu(
+            "PUJIAN",
+            `Bagus! Kamu telah meneroka kad <strong>${item.nama}</strong> (${item.kategori}). Teroka ${3 - state.collectedCards.length} kad lagi untuk lengkapkan Misi 1.`
+          );
+          maklumBalasDiberi = true;
+        }
+      }
+      // Semak Misi 2: Cari kad yang memenuhi syarat Tanda Kecil 2 kali
+      else if (!state.misiDone[1]) {
+        if (item.kategori === "Tanda Kecil") {
+          if (!state.tandaKecilMatched.includes(i)) {
+            state.tandaKecilMatched.push(i);
+          }
+          if (state.tandaKecilMatched.length >= 2) {
+            state.misiDone[1] = true;
+            beriGanjaran(15, "pengelas", "menyelesaikan Misi 2 (mengenal pasti 2 kad Tanda Kecil)");
+            maklumBalasDiberi = true;
+          } else {
+            paparMesejPemandu(
+              "PUJIAN",
+              `Tepat sekali! <strong>${item.nama}</strong> ialah Tanda Kecil Hari Kiamat (1/2). Cari 1 lagi kad Tanda Kecil!`
+            );
+            maklumBalasDiberi = true;
+          }
+        } else {
+          paparMesejPemandu(
+            "CADANGAN",
+            `Kad <strong>${item.nama}</strong> ialah <em>Tanda Besar</em>. Untuk Misi 2, cari kad yang berkaitan kerosakan amanah atau pembunuhan dalam masyarakat.`
+          );
+          maklumBalasDiberi = true;
+        }
+      }
+      // Semak Misi 3: Kumpul kesemua 6 kad
+      if (state.misiDone[0] && state.misiDone[1] && !state.misiDone[2]) {
+        if (state.collectedCards.length >= WORDS.length) {
+          state.misiDone[2] = true;
+          beriGanjaran(20, "pengumpul", "mengumpul kesemua 6 kad tanda hari kiamat");
+          maklumBalasDiberi = true;
+        } else if (!maklumBalasDiberi) {
+          paparMesejPemandu(
+            "PUJIAN",
+            `Kad <strong>${item.nama}</strong> berjaya dikumpul! Kumpul ${WORDS.length - state.collectedCards.length} kad lagi untuk tamatkan Misi 3.`
+          );
+        }
+      }
+
+      simpanState();
+      kemasKiniPaparanMisiDanKad();
+    }
+
+    function kemasKiniPaparanMisiDanKad() {
+      // Kemas kini status misi
+      document.getElementById("misiCount1").textContent = `${Math.min(state.collectedCards.length, 3)}/3`;
+      document.getElementById("misiCount2").textContent = `${Math.min(state.tandaKecilMatched.length, 2)}/2`;
+      document.getElementById("misiCount3").textContent = `${state.collectedCards.length}/6`;
+
+      const m1 = document.getElementById("misiItem1");
+      const m2 = document.getElementById("misiItem2");
+      const m3 = document.getElementById("misiItem3");
+
+      m1.className = "mission-item " + (state.misiDone[0] ? "done" : "current");
+      m2.className = "mission-item " + (state.misiDone[1] ? "done" : (state.misiDone[0] ? "current" : ""));
+      m3.className = "mission-item " + (state.misiDone[2] ? "done" : (state.misiDone[1] ? "current" : ""));
+
+      const selesaiCount = state.misiDone.filter(Boolean).length;
+      document.getElementById("misiProgressText").textContent =
+        selesaiCount === 3 ? "Semua Misi Selesai (3/3) ✅" : `Misi ${selesaiCount + 1}/3`;
+
+      // Kemas kini kelas kad dikumpul pada grid
+      WORDS.forEach((_, idx) => {
+        const tile = document.getElementById("cardTile_" + idx);
+        const st = document.getElementById("cardStatus_" + idx);
+        if (tile && st) {
+          const isCol = state.collectedCards.includes(idx);
+          tile.classList.toggle("collected", isCol);
+          st.textContent = isCol ? "✅ Dikumpul" : "Klik / Imbas";
+        }
+      });
+    }
+
+    function binaGridKadKlik() {
+      const grid = document.getElementById("cardsGrid");
+      grid.innerHTML = "";
+      let gambarSenarai = [];
+      if (window.ArKad && typeof ArKad.gambarKad === "function") {
+        try {
+          gambarSenarai = ArKad.gambarKad() || [];
+        } catch (e) {
+          gambarSenarai = [];
+        }
+      }
+
+      WORDS.forEach((w, i) => {
+        const tile = document.createElement("div");
+        tile.className = "ar-card-tile" + (state.collectedCards.includes(i) ? " collected" : "");
+        tile.id = "cardTile_" + i;
+        tile.onclick = () => kendaliKadDijumpai(i, w);
+
+        const imgWrap = document.createElement("div");
+        imgWrap.className = "ar-card-img-wrap";
+
+        const sumber = gambarSenarai[i];
+        if (typeof sumber === "string" && sumber.length > 0) {
+          const img = document.createElement("img");
+          img.src = sumber;
+          img.alt = w.nama;
+          imgWrap.appendChild(img);
+        } else if (sumber instanceof HTMLElement) {
+          imgWrap.appendChild(sumber.cloneNode(true));
+        } else {
+          // Paparan sandaran jika imej ArKad belum dijana semasa luar talian
+          imgWrap.innerHTML = `<span style="font-size:2rem;">${w.kategori === "Tanda Kecil" ? "⚖️" : "🌅"}</span>`;
+        }
+
+        const nameDiv = document.createElement("div");
+        nameDiv.className = "ar-card-name";
+        nameDiv.textContent = w.nama;
+
+        const statusDiv = document.createElement("div");
+        statusDiv.className = "ar-card-status";
+        statusDiv.id = "cardStatus_" + i;
+        statusDiv.textContent = state.collectedCards.includes(i) ? "✅ Dikumpul" : "Klik / Imbas";
+
+        tile.appendChild(imgWrap);
+        tile.appendChild(nameDiv);
+        tile.appendChild(statusDiv);
+        grid.appendChild(tile);
+      });
+    }
+
+    function aktifkanModKlik() {
+      binaGridKadKlik();
+      paparMesejPemandu(
+        "PENCETUS",
+        `Mod tanpa kamera aktif! Klik mana-mana gambar kad di bawah untuk menyelesaikan misi semasa: <strong>${dapatkanTeksMisiSemasa()}</strong>`
+      );
+      document.getElementById("cardsGrid").scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    function mulakanKameraAR() {
+      paparMesejPemandu(
+        "PENCETUS",
+        `Kamera AR dimulakan! Halakan kamera ke kad bercetak untuk menyelesaikan: <strong>${dapatkanTeksMisiSemasa()}</strong>`
+      );
+      if (window.ArKad && typeof ArKad.mula === "function") {
+        ArKad.mula();
+      } else {
+        paparMesejPemandu(
+          "CADANGAN",
+          "Pustaka kamera AR sedang dimuatkan atau peranti tiada akses kamera. Kamu boleh teruskan misi menggunakan butang <strong>✋ Tanpa kamera: klik gambar kad</strong>."
+        );
+      }
+    }
+
+    /* =====================================================================
+       6. SUARA KE TEKS (WEB SPEECH API) & SEMAKAN KATA KUNCI SEGERA
+       ===================================================================== */
+    function mulaSuara(targetInputId, callbackSemak) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        paparMesejPemandu(
+          "CADANGAN",
+          "Pelayar ini tidak menyokong pengecaman suara secara langsung. Sila taip jawapan kamu dan tekan butang <strong>Semak</strong>."
+        );
+        return;
+      }
+
+      const recognition = new SpeechRecognition();
+      recognition.lang = "ms-MY";
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      const inputEl = document.getElementById(targetInputId);
+      paparMesejPemandu("PENCETUS", "🎙️ Sedang mendengar... Sila sebut jawapan kamu dengan jelas sekarang.");
+
+      recognition.onresult = (event) => {
+        const transkrip = event.results[0][0].transcript;
+        if (inputEl) {
+          inputEl.value = transkrip;
+        }
+        // Terus semak selepas murid habis bercakap (Wajib #4)
+        if (typeof callbackSemak === "function") {
+          callbackSemak();
+        }
+      };
+
+      recognition.onerror = () => {
+        paparMesejPemandu(
+          "CADANGAN",
+          "Suara kurang jelas atau mikrofon tidak dapat diakses. Cuba sebut semula atau taip jawapan kamu di kotak teks."
+        );
+      };
+
+      recognition.start();
+    }
+
+    function semakKataKunci(teksMurid, senaraiKumpulanKataKunci) {
+      const bersih = (teksMurid || "").toLowerCase().trim();
+      const ditemui = [];
+      const tertinggal = [];
+
+      senaraiKumpulanKataKunci.forEach(kumpulan => {
+        const ada = kumpulan.kata.some(k => bersih.includes(k.toLowerCase()));
+        if (ada) {
+          ditemui.push(kumpulan.label);
+        } else {
+          tertinggal.push(kumpulan.label);
+        }
+      });
+
+      return { ditemui, tertinggal };
+    }
+
+    /* =====================================================================
+       7. FASA 2: RENUNG (3 SOALAN + 1 AYAT RUMUSAN)
+       ===================================================================== */
+    const SKEMA_RENUNG = {
+      1: [
+        { label: "kategori tanda kecil / tanda besar", kata: ["tanda kecil", "tanda besar", "kecil", "besar"] },
+        { label: "perubahan luar biasa sistem alam / kiamat hampir", kata: ["luar biasa", "hampir", "alam", "barat", "amanah"] }
+      ],
+      2: [
+        { label: "fitnah Dajjal", kata: ["dajjal", "fitnah", "sesat"] },
+        { label: "Nabi Isa a.s. menewaskan Dajjal / menegakkan kebenaran", kata: ["nabi isa", "isa", "tewas", "kebenaran", "turun"] }
+      ],
+      3: [
+        { label: "sentiasa beramal soleh", kata: ["amal soleh", "beramal", "soleh", "ibadah"] },
+        { label: "menjaga amanah / membuat persediaan", kata: ["amanah", "sedia", "persediaan", "tanggungjawab"] }
+      ]
+    };
+
+    function semakRenung(noSoalan) {
+      const teks = document.getElementById("renungInput" + noSoalan).value;
+      const fbEl = document.getElementById("renungFb" + noSoalan);
+      if (!teks.trim()) {
+        paparMesejPemandu("CADANGAN", "Sila taip atau sebut jawapan kamu dahulu sebelum menyemak.");
+        return;
+      }
+
+      const hasil = semakKataKunci(teks, SKEMA_RENUNG[noSoalan]);
+      fbEl.classList.add("show");
+
+      if (hasil.tertinggal.length === 0) {
+        fbEl.className = "feedback-inline show fb-ok";
+        fbEl.innerHTML = `✅ <strong>Cemerlang!</strong> Jawapan kamu merangkumi idea utama: <em>${hasil.ditemui.join(", ")}</em>.`;
+        if (!state.renungDone[noSoalan - 1]) {
+          state.renungDone[noSoalan - 1] = true;
+          beriGanjaran(10, null, `menjawab Soalan Renung ${noSoalan} dengan tepat`);
+        } else {
+          paparMesejPemandu("PUJIAN", `Bagus! Idea utama (${hasil.ditemui.join(", ")}) tepat sekali.`);
+        }
+        semakLengkapRenung();
+      } else {
+        fbEl.className = "feedback-inline show fb-warn";
+        const bahagianBetul = hasil.ditemui.length > 0 ? `Idea yang sudah tepat: <strong>${hasil.ditemui.join(", ")}</strong>. ` : "";
+        fbEl.innerHTML = `💡 ${bahagianBetul}Idea yang masih tertinggal: <strong>${hasil.tertinggal.join(", ")}</strong>. Cuba tambah idea tersebut!`;
+        paparMesejPemandu(
+          "CADANGAN",
+          `${bahagianBetul}Cuba lengkapkan jawapan kamu dengan menyentuh idea tentang <strong>${hasil.tertinggal.join(" dan ")}</strong>.`
+        );
+      }
+    }
+
+    function semakRumusan() {
+      const teks = document.getElementById("rumusanInput").value;
+      const fbEl = document.getElementById("rumusanFb");
+      if (!teks.trim()) {
+        paparMesejPemandu("CADANGAN", "Sila sebut atau taip satu ayat rumusan lengkap kamu dahulu.");
+        return;
+      }
+
+      const skemaRumusan = [
+        { label: "contoh tanda kecil (amanah disia-siakan / pembunuhan)", kata: ["amanah", "pembunuhan", "bunuh", "tanda kecil"] },
+        { label: "contoh tanda besar (Dajjal / Nabi Isa / Yakjuj Makjuj / matahari terbit barat)", kata: ["dajjal", "isa", "yakjuj", "makjuj", "matahari", "barat", "tanda besar"] },
+        { label: "amalan persediaan (beramal soleh / menjaga amanah)", kata: ["amal soleh", "beramal", "soleh", "amanah", "bersedia", "persediaan"] }
+      ];
+
+      const hasil = semakKataKunci(teks, skemaRumusan);
+      fbEl.classList.add("show");
+
+      if (hasil.tertinggal.length === 0) {
+        fbEl.className = "feedback-inline show fb-ok";
+        fbEl.innerHTML = `✅ <strong>Rumusan Lengkap!</strong> Kamu berjaya menggabungkan unsur tanda kecil, tanda besar, dan persediaan amal soleh.`;
+        if (!state.renungDone[3]) {
+          state.renungDone[3] = true;
+          beriGanjaran(15, null, "melengkapkan satu ayat rumusan pelajaran");
+        } else {
+          paparMesejPemandu("PUJIAN", "Rumusan ayat kamu sangat padat dan tepat!");
+        }
+        semakLengkapRenung();
+      } else {
+        fbEl.className = "feedback-inline show fb-warn";
+        const bahagianBetul = hasil.ditemui.length > 0 ? `Unsur betul: <strong>${hasil.ditemui.join(", ")}</strong>. ` : "";
+        fbEl.innerHTML = `💡 ${bahagianBetul}Unsur tertinggal dalam rumusan: <strong>${hasil.tertinggal.join(", ")}</strong>.`;
+        paparMesejPemandu(
+          "CADANGAN",
+          `${bahagianBetul}Pastikan ayat rumusan kamu menyebut <strong>${hasil.tertinggal.join(" serta ")}</strong>.`
+        );
+      }
+    }
+
+    function semakLengkapRenung() {
+      if (state.renungDone.every(Boolean)) {
+        beriGanjaran(10, "pemikir", "melengkapkan semua soalan dan rumusan dalam Fasa Renung");
+      }
+    }
+
+    /* =====================================================================
+       8. FASA 3: FAHAM — INTEGRASI AIAdaptif.kuiz & AKTIVITI PEMBETULAN
+       ===================================================================== */
+    function mulakanKuizAdaptif() {
+      if (window.AIAdaptif && typeof AIAdaptif.kuiz === "function") {
+        AIAdaptif.kuiz("#kuizAdaptifContainer", {
+          soalan: SOALAN_KUIZ,
+          pembetulan: PEMBETULAN_KONSEP,
+          jumlah: 8,
+          mesej: (jenis, teks) => {
+            paparMesejPemandu(jenis, teks);
+            kemasKiniPanelAI();
+          }
+        });
+      } else {
+        document.getElementById("kuizAdaptifContainer").innerHTML =
+          `<p style="color:#b91c1c; font-size:0.85rem;">Pustaka AIAdaptif memerlukan sambungan internet untuk memuatkan enjin kuiz adaptif.</p>`;
+      }
+    }
+
+    function kemasKiniPanelAI() {
+      const labelTahap = {
+        1: "Tahap 1 — Mudah",
+        2: "Tahap 2 — Sederhana",
+        3: "Tahap 3 — Sukar"
+      };
+      let lvl = 1;
+      if (window.AIAdaptif && typeof AIAdaptif.tahap === "function") {
+        try {
+          const t = AIAdaptif.tahap();
+          if (t && t.lvl) lvl = t.lvl;
+        } catch (e) {
+          lvl = 1;
+        }
+      }
+      const disp = document.getElementById("aiLevelDisplay");
+      if (disp) disp.textContent = labelTahap[lvl] || "Tahap 1 — Mudah";
+      return lvl;
+    }
+
+    // Semakan sebutan perkataan/frasa sasaran (Wajib #4)
+    function semakPembetulan(noKonsep) {
+      const sasaranMap = {
+        1: {
+          sasaran: "Amanah disia-siakan dan berlakunya banyak pembunuhan",
+          kunci: [
+            { label: "amanah disia-siakan", kata: ["amanah"] },
+            { label: "banyak pembunuhan", kata: ["pembunuhan", "bunuh"] }
+          ],
+          konsep: "tanda_kecil"
+        },
+        2: {
+          sasaran: "Matahari terbit dari sebelah barat",
+          kunci: [
+            { label: "matahari terbit", kata: ["matahari"] },
+            { label: "sebelah barat", kata: ["barat"] }
+          ],
+          konsep: "tanda_besar"
+        },
+        3: {
+          sasaran: "Sentiasa beramal soleh",
+          kunci: [
+            { label: "beramal soleh", kata: ["amal soleh", "beramal", "soleh"] }
+          ],
+          konsep: "kronologi_akhirat"
+        }
+      };
+
+      const cfg = sasaranMap[noKonsep];
+      const inputVal = document.getElementById("remInput" + noKonsep).value;
+      const fbEl = document.getElementById("remFb" + noKonsep);
+
+      if (!inputVal.trim()) {
+        paparMesejPemandu("CADANGAN", "Sila sebut atau taip frasa sasaran terlebih dahulu.");
+        return;
+      }
+
+      const bersihInput = inputVal.toLowerCase().replace(/[.,!?]/g, "").trim();
+      const bersihSasaran = cfg.sasaran.toLowerCase().replace(/[.,!?]/g, "").trim();
+      const hasil = semakKataKunci(inputVal, cfg.kunci);
+
+      fbEl.classList.add("show");
+      if (bersihInput === bersihSasaran || hasil.tertinggal.length === 0) {
+        const tepatPenuh = bersihInput === bersihSasaran;
+        fbEl.className = "feedback-inline show fb-ok";
+        fbEl.innerHTML = tepatPenuh
+          ? `✅ <strong>Sebutan / Teks Tepat Sepenuhnya!</strong> ("${cfg.sasaran}")`
+          : `✅ <strong>Sebutan Tepat pada Kata Kunci!</strong> Kamu menyebut: "${inputVal}" (Sasaran: "${cfg.sasaran}").`;
+        beriGanjaran(10, "cendekiawan", `menguasai latihan pembetulan konsep ${cfg.konsep}`);
+      } else {
+        fbEl.className = "feedback-inline show fb-warn";
+        fbEl.innerHTML = `⚠️ Sebutan belum tepat. Kamu menyebut: "<em>${inputVal}</em>". Bahagian tertinggal: <strong>${hasil.tertinggal.join(", ")}</strong>. Cuba sebut sekali lagi!`;
+        paparMesejPemandu(
+          "CADANGAN",
+          `Sebutan belum menepati sasaran. Cuba tekankan bahagian <strong>${hasil.tertinggal.join(" dan ")}</strong>.`
+        );
+      }
+    }
+
+    /* =====================================================================
+       9. FASA 4: CUBA — 3 SITUASI BAHARU (RAMAL DAHULU KEMUDIAN UJI)
+       ===================================================================== */
+    let masaMulaCuba = Date.now();
+
+    let susunanSim2 = [
+      "Turunnya Nabi Isa a.s.",
+      "Matahari Terbit dari Sebelah Barat",
+      "Keluarnya Dajjal",
+      "Keluarnya Yakjuj dan Makjuj"
+    ];
+
+    const URUTAN_BETUL_SIM2 = [
+      "Keluarnya Dajjal",
+      "Turunnya Nabi Isa a.s.",
+      "Keluarnya Yakjuj dan Makjuj",
+      "Matahari Terbit dari Sebelah Barat"
+    ];
+
+    let susunanSim3 = [
+      { nama: "Perhimpunan (Mahsyar)", maksud: "Manusia dihimpunkan di padang yang luas" },
+      { nama: "Alam Barzakh", maksud: "Alam pemisah antara dunia dan akhirat selepas kematian" },
+      { nama: "Mizan", maksud: "Neraca timbangan amalan baik dan buruk" },
+      { nama: "Kebangkitan (Ba'ath)", maksud: "Manusia dibangkitkan semula daripada kubur" },
+      { nama: "Syurga atau Neraka", maksud: "Pengakhiran abadi sebagai balasan amalan" },
+      { nama: "Hisab", maksud: "Perhitungan segala amalan manusia di dunia" },
+      { nama: "Sirat", maksud: "Titian yang merentangi neraka menuju syurga" }
+    ];
+
+    const URUTAN_BETUL_SIM3 = [
+      "Alam Barzakh",
+      "Kebangkitan (Ba'ath)",
+      "Perhimpunan (Mahsyar)",
+      "Hisab",
+      "Mizan",
+      "Sirat",
+      "Syurga atau Neraka"
+    ];
+
+    function binaAntaraMukaCuba() {
+      // Situasi 1: Klasifikasi 6 kad ke Bakul Tanda Kecil / Tanda Besar
+      const sim1El = document.getElementById("sim1List");
+      sim1El.innerHTML = WORDS.map((w, idx) => `
+        <div class="sort-row">
+          <span style="font-size:0.84rem; font-weight:700;">${idx + 1}. ${w.nama}</span>
+          <select id="sim1Pick_${idx}" class="input-box" style="width:auto; margin:0; padding:5px 8px;">
+            <option value="">-- Pilih Bakul --</option>
+            <option value="Tanda Kecil">Bakul Tanda Kecil</option>
+            <option value="Tanda Besar">Bakul Tanda Besar</option>
+          </select>
+        </div>
+      `).join("");
+
+      lukisSenaraiSim2();
+      lukisSenaraiSim3();
+    }
+
+    function lukisSenaraiSim2() {
+      const sim2El = document.getElementById("sim2List");
+      sim2El.innerHTML = susunanSim2.map((nama, idx) => `
+        <div class="sort-row">
+          <span style="font-size:0.84rem; font-weight:700;">#${idx + 1} ${nama}</span>
+          <div class="order-controls">
+            <button class="btn-mini" onclick="alihItemSim2(${idx}, -1)" ${idx === 0 ? "disabled" : ""}>⬆️</button>
+            <button class="btn-mini" onclick="alihItemSim2(${idx}, 1)" ${idx === susunanSim2.length - 1 ? "disabled" : ""}>⬇️</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function alihItemSim2(idx, arah) {
+      const baru = idx + arah;
+      if (baru < 0 || baru >= susunanSim2.length) return;
+      const temp = susunanSim2[idx];
+      susunanSim2[idx] = susunanSim2[baru];
+      susunanSim2[baru] = temp;
+      lukisSenaraiSim2();
+    }
+
+    function lukisSenaraiSim3() {
+      const sim3El = document.getElementById("sim3List");
+      sim3El.innerHTML = susunanSim3.map((obj, idx) => `
+        <div class="sort-row">
+          <div style="flex:1; min-width:180px;">
+            <strong style="font-size:0.84rem;">#${idx + 1} ${obj.nama}</strong>
+            <div style="font-size:0.75rem; color:var(--muted);">${obj.maksud}</div>
+          </div>
+          <div class="order-controls">
+            <button class="btn-mini" onclick="alihItemSim3(${idx}, -1)" ${idx === 0 ? "disabled" : ""}>⬆️</button>
+            <button class="btn-mini" onclick="alihItemSim3(${idx}, 1)" ${idx === susunanSim3.length - 1 ? "disabled" : ""}>⬇️</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function alihItemSim3(idx, arah) {
+      const baru = idx + arah;
+      if (baru < 0 || baru >= susunanSim3.length) return;
+      const temp = susunanSim3[idx];
+      susunanSim3[idx] = susunanSim3[baru];
+      susunanSim3[baru] = temp;
+      lukisSenaraiSim3();
+    }
+
+    function kemasKiniCadanganCuba() {
+      masaMulaCuba = Date.now();
+      const lvl = kemasKiniPanelAI(); // Menggunakan AIAdaptif.tahap().lvl (1 Mudah, 2 Sederhana, 3 Sukar)
+      const labelSituasi = {
+        1: "Situasi 1 (Tahap 1: Mudah — Klasifikasi Kotak Tanda Kiamat)",
+        2: "Situasi 2 (Tahap 2: Sederhana — Garis Masa Tanda Besar)",
+        3: "Situasi 3 (Tahap 3: Sukar — Kronologi Fasa Hari Akhirat)"
+      };
+      document.getElementById("cubaRecText").textContent = labelSituasi[lvl] || labelSituasi[1];
+
+      [1, 2, 3].forEach(n => {
+        const card = document.getElementById("simCard" + n);
+        const badge = document.getElementById("recBadge" + n);
+        if (card && badge) {
+          card.classList.toggle("recommended", n === lvl);
+          badge.style.display = n === lvl ? "inline-block" : "none";
+        }
+      });
+    }
+
+    function rekodKeAIAdaptif(ok, konsep) {
+      const saat = Math.max(1, Math.round((Date.now() - masaMulaCuba) / 1000));
+      masaMulaCuba = Date.now();
+      if (window.AIAdaptif && typeof AIAdaptif.rekod === "function") {
+        try {
+          AIAdaptif.rekod({
+            ok: Boolean(ok),
+            hints: 0,
+            secs: saat,
+            exp: 20,
+            concept: konsep
+          });
+        } catch (e) {
+          console.warn("Ralat AIAdaptif.rekod:", e);
+        }
+      }
+      kemasKiniCadanganCuba();
+    }
+
+    function ujiSituasi1() {
+      const rKecil = document.getElementById("ramal1Kecil").value;
+      const rBesar = document.getElementById("ramal1Besar").value;
+      const fbEl = document.getElementById("sim1Fb");
+
+      if (!rKecil || !rBesar) {
+        paparMesejPemandu("CADANGAN", "Sila lengkapkan <strong>Langkah 1 (Ramalan)</strong> terlebih dahulu sebelum menguji susunan!");
+        return;
+      }
+
+      let betulSusun = 0;
+      WORDS.forEach((w, idx) => {
+        const pilihan = document.getElementById("sim1Pick_" + idx).value;
+        if (pilihan === w.kategori) betulSusun++;
+      });
+
+      const ramalanTepat = rKecil === "2" && rBesar === "4";
+      const semuaBetul = betulSusun === WORDS.length && ramalanTepat;
+
+      fbEl.classList.add("show");
+      rekodKeAIAdaptif(semuaBetul, "tanda_kecil");
+
+      if (semuaBetul) {
+        fbEl.className = "feedback-inline show fb-ok";
+        fbEl.innerHTML = `✅ <strong>Ujian Berjaya!</strong> Ramalan kamu tepat (2 Tanda Kecil, 4 Tanda Besar) dan kesemua 6 kad dikelaskan dengan betul!`;
+        state.cubaDone[0] = true;
+        beriGanjaran(15, state.cubaDone.every(Boolean) ? "pengamal" : null, "menyelesaikan Situasi 1 dengan tepat");
+      } else {
+        fbEl.className = "feedback-inline show fb-warn";
+        fbEl.innerHTML = `⚠️ Skor susunan: <strong>${betulSusun}/6 kad</strong>. Ramalan: ${ramalanTepat ? "Tepat (2 Kecil, 4 Besar)" : "Kurang tepat — semak jumlah kad Tanda Kecil dan Tanda Besar dalam Fasa Alami"}.`;
+        paparMesejPemandu(
+          "CADANGAN",
+          "Ingat semula: peristiwa berkaitan keruntuhan amanah dan pembunuhan ialah Tanda Kecil, manakala 4 kejadian luar biasa ialah Tanda Besar."
+        );
+      }
+      simpanState();
+    }
+
+    function ujiSituasi2() {
+      const rAwal = document.getElementById("ramal2Awal").value;
+      const rAkhir = document.getElementById("ramal2Akhir").value;
+      const fbEl = document.getElementById("sim2Fb");
+
+      if (!rAwal || !rAkhir) {
+        paparMesejPemandu("CADANGAN", "Sila buat ramalan peristiwa paling awal dan peristiwa pintu taubat ditutup dahulu!");
+        return;
+      }
+
+      const urutanBetul = susunanSim2.every((val, idx) => val === URUTAN_BETUL_SIM2[idx]);
+      const ramalanBetul = rAwal === "Keluarnya Dajjal" && rAkhir === "Matahari Terbit dari Sebelah Barat";
+      const semuaBetul = urutanBetul && ramalanBetul;
+
+      fbEl.classList.add("show");
+      rekodKeAIAdaptif(semuaBetul, "tanda_besar");
+
+      if (semuaBetul) {
+        fbEl.className = "feedback-inline show fb-ok";
+        fbEl.innerHTML = `✅ <strong>Garis Masa Tepat!</strong> Bermula dengan <em>Keluarnya Dajjal</em>, diikuti <em>Turunnya Nabi Isa a.s.</em>, <em>Keluarnya Yakjuj dan Makjuj</em>, dan berakhir dengan <em>Matahari Terbit dari Sebelah Barat</em>.`;
+        state.cubaDone[1] = true;
+        beriGanjaran(20, state.cubaDone.every(Boolean) ? "pengamal" : null, "menyusun garis masa tanda besar dengan tepat");
+      } else {
+        fbEl.className = "feedback-inline show fb-warn";
+        fbEl.innerHTML = `⚠️ Garis masa atau ramalan belum tepat sepenuhnya. Semak semula siapa yang turun menewaskan Dajjal dan tanda yang menutup pintu taubat.`;
+        paparMesejPemandu(
+          "CADANGAN",
+          "Petunjuk: Dajjal keluar dahulu, kemudian Nabi Isa a.s. turun menewaskannya, diikuti kemunculan Yakjuj dan Makjuj."
+        );
+      }
+      simpanState();
+    }
+
+    function ujiSituasi3() {
+      const rMula = document.getElementById("ramal3Mula").value;
+      const rAkhir = document.getElementById("ramal3Akhir").value;
+      const fbEl = document.getElementById("sim3Fb");
+
+      if (!rMula || !rAkhir) {
+        paparMesejPemandu("CADANGAN", "Sila lengkapkan ramalan fasa pertama selepas mati dan pengakhiran orang beramal soleh dahulu!");
+        return;
+      }
+
+      const urutanBetul = susunanSim3.every((obj, idx) => obj.nama === URUTAN_BETUL_SIM3[idx]);
+      const ramalanBetul = rMula === "Alam Barzakh" && rAkhir === "Syurga";
+      const semuaBetul = urutanBetul && ramalanBetul;
+
+      fbEl.classList.add("show");
+      rekodKeAIAdaptif(semuaBetul, "kronologi_akhirat");
+
+      if (semuaBetul) {
+        fbEl.className = "feedback-inline show fb-ok";
+        fbEl.innerHTML = `✅ <strong>Kronologi Hari Akhirat Sempurna!</strong> Alam Barzakh → Kebangkitan (Ba'ath) → Mahsyar → Hisab → Mizan → Sirat → Syurga. Semoga kita sentiasa beramal soleh!`;
+        state.cubaDone[2] = true;
+        beriGanjaran(25, "pengamal", "menyelesaikan semua cabaran dalam Fasa Cuba");
+      } else {
+        fbEl.className = "feedback-inline show fb-warn";
+        fbEl.innerHTML = `⚠️ Susunan kronologi fasa hari akhirat belum tepat. Pastikan susunan bermula dari alam kubur, dibangkitkan, dihimpunkan, dihitung, ditimbang, meniti titian hingga balasan abadi.`;
+        paparMesejPemandu(
+          "CADANGAN",
+          "Petunjuk: Selepas Alam Barzakh dan Kebangkitan (Ba'ath), manusia dihimpunkan di Mahsyar sebelum amalan dihisab dan ditimbang di Mizan."
+        );
+      }
+      simpanState();
+    }
+
+    /* =====================================================================
+       10. BUTANG MULA SEMULA (2 KLIK DALAM 4 SAAT — WAJIB #8)
+       ===================================================================== */
+    let resetConfirmArmed = false;
+    let resetConfirmTimeout = null;
+
+    function handleResetClick() {
+      const btn = document.getElementById("btnResetAll");
+      if (!resetConfirmArmed) {
+        resetConfirmArmed = true;
+        btn.classList.add("confirm-danger");
+        btn.textContent = "Tekan lagi untuk padam semua";
+        resetConfirmTimeout = setTimeout(() => {
+          resetConfirmArmed = false;
+          btn.classList.remove("confirm-danger");
+          btn.textContent = "🔄 Mula semula";
+        }, 4000);
+      } else {
+        clearTimeout(resetConfirmTimeout);
+        try {
+          localStorage.removeItem(STORAGE_KEY);
+          localStorage.clear();
+        } catch (e) {
+          console.warn(e);
+        }
+        if (window.AIAdaptif && typeof AIAdaptif.setSemula === "function") {
+          try {
+            AIAdaptif.setSemula();
+          } catch (e) {
+            console.warn(e);
+          }
+        }
+        location.reload();
+      }
+    }
+
+    /* =====================================================================
+       11. INISIALISASI APLIKASI SEMASA HALAMAN DIMUATKAN
+       ===================================================================== */
+    document.addEventListener("DOMContentLoaded", () => {
+      muatState();
+      kemasKiniHeaderGanjaran();
+
+      // Sediakan pustaka ArKad dengan senarai WORDS yang sama
+      if (window.ArKad && typeof ArKad.sediakan === "function") {
+        try {
+          ArKad.sediakan({
+            kad: WORDS.map(w => ({ nama: w.nama, info: w.info })),
+            apabilaJumpa: (i, kad) => {
+              kendaliKadDijumpai(i, kad);
+            },
+            misi: () => dapatkanTeksMisiSemasa()
+          });
+        } catch (e) {
+          console.warn("Ralat ArKad.sediakan:", e);
+        }
+      }
+
+      // Papar kad untuk dicetak (guru) menggunakan ArKad.paparKad
+      const bekasCetak = document.getElementById("bekasKadCetak");
+      if (window.ArKad && typeof ArKad.paparKad === "function" && bekasCetak) {
+        try {
+          ArKad.paparKad(bekasCetak);
+        } catch (e) {
+          console.warn("Ralat ArKad.paparKad:", e);
+        }
+      }
+
+      // Bina grid kad klik (menggunakan ArKad.gambarKad()[i])
+      binaGridKadKlik();
+      kemasKiniPaparanMisiDanKad();
+
+      // Mulakan kuiz adaptif Fasa Faham menggunakan AIAdaptif.kuiz
+      mulakanKuizAdaptif();
+
+      // Bina aktiviti Fasa Cuba
+      binaAntaraMukaCuba();
+      kemasKiniCadanganCuba();
+
+      // Pulihkan fasa terakhir murid
+      tukarFasa(state.phase || 1);
+    });
+  </script>
+</body>
+</html>
